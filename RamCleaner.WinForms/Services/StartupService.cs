@@ -5,7 +5,7 @@ namespace RamCleaner.WinForms.Services;
 internal class StartupService
 {
     private const string RegistryKeyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
-    private const string AppName = "SupremeLegendsRamCleaner";
+    private const string AppName = "RamCleaner";
 
     public static bool IsStartupEnabled()
     {

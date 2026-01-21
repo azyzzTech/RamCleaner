@@ -89,7 +89,7 @@ internal partial class MainForm : Form
 
     private void SetupLanguage()
     {
-        this.Text = _isTurkish ? "SupremeLegends RAM Temizleyici" : "SupremeLegends RAM Cleaner";
+        this.Text = _isTurkish ? "RAM Temizleyici" : "RAM Cleaner";
         ApplicationName.Text = _isTurkish ? "Uygulama Adı" : "Application Name";
         btnClean.Text = _isTurkish ? "Şimdi Temizle" : "Clean Now";
         btnRefresh.Text = _isTurkish ? "Listeyi Yenile" : "Refresh List";
@@ -97,9 +97,9 @@ internal partial class MainForm : Form
         btnSelectNone.Text = _isTurkish ? "Hiçbirini Seçme" : "Select None";
         chkAutoClean.Text = _isTurkish ? "Otomatik Temizle" : "Auto Clean";
         chkStartup.Text = _isTurkish ? "Windows ile Başlat" : "Start with Windows";
-        lblTitle.Text = _isTurkish ? "SupremeLegends RAM Temizleyici" : "SupremeLegends RAM Cleaner";
+        lblTitle.Text = _isTurkish ? "RAM Temizleyici" : "RAM Cleaner";
         Memory.Text = _isTurkish ? "Bellek Kullanımı" : "Memory Usage";
-        notifyIcon.Text = _isTurkish ? "SupremeLegends RAM Temizleyici" : "SupremeLegends RAM Cleaner";
+        notifyIcon.Text = _isTurkish ? "RAM Temizleyici" : "RAM Cleaner";
         lnkYoutube.Text = _isTurkish ? "Bizi Takip Edin: YouTube" : "Follow Us: YouTube";
         groupBoxProcesses.Text = _isTurkish ? "Yüksek Bellek Kullanan Süreçler" : "High Memory Usage Processes";
         showToolStripMenuItem.Text = _isTurkish ? "Göster" : "Show";

@@ -145,11 +145,12 @@ partial class MainForm
         chkAutoClean.AutoSize = true;
         chkAutoClean.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         chkAutoClean.ForeColor = Color.White;
-        chkAutoClean.Location = new Point(12, 24);
+        chkAutoClean.Location = new Point(45, 24);
         chkAutoClean.Name = "chkAutoClean";
         chkAutoClean.Size = new Size(101, 23);
         chkAutoClean.TabIndex = 3;
         chkAutoClean.Text = "Auto Clean";
+        chkAutoClean.TextAlign = ContentAlignment.MiddleCenter;
         chkAutoClean.UseVisualStyleBackColor = false;
         chkAutoClean.CheckedChanged += ChkAutoClean_CheckedChanged;
         // 
@@ -216,9 +217,9 @@ partial class MainForm
         lblTitle.ForeColor = Color.White;
         lblTitle.Location = new Point(15, 13);
         lblTitle.Name = "lblTitle";
-        lblTitle.Size = new Size(365, 32);
+        lblTitle.Size = new Size(163, 32);
         lblTitle.TabIndex = 0;
-        lblTitle.Text = "SupremeLegends RAM Cleaner";
+        lblTitle.Text = "RAM Cleaner";
         // 
         // panelStats
         // 
