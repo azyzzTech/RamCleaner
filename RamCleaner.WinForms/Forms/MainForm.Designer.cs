@@ -448,7 +448,7 @@ partial class MainForm
         // notifyIcon
         // 
         notifyIcon.ContextMenuStrip = contextMenuStrip;
-        notifyIcon.Text = "SupremeLegends RAM Cleaner";
+        notifyIcon.Text = "RAM Cleaner";
         notifyIcon.Visible = true;
         notifyIcon.MouseDoubleClick += NotifyIcon_MouseDoubleClick;
         // 
