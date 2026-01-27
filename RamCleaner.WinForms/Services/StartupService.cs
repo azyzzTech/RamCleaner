@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using RamCleaner.WinForms.Core.Services;
 using System;
+using System.Reflection;
 
 namespace RamCleaner.WinForms.Services;
 
@@ -15,15 +16,13 @@ internal class StartupService : IStartupService
         {
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey(RegistryKeyPath, false))
             {
-                if (key != null)
-                {
-                    return key.GetValue(AppName) != null;
-                }
+                return key?.GetValue(AppName) != null;
             }
         }
-        catch { }
-
-        return false;
+        catch
+        {
+            return false;
+        }
     }
 
     public void EnableStartup()
@@ -32,16 +31,15 @@ internal class StartupService : IStartupService
         {
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey(RegistryKeyPath, true))
             {
-                if (key != null)
-                {
-                    string executablePath = Application.ExecutablePath;
-                    key.SetValue(AppName, $"\"{executablePath}\"");
-                }
+                if (key == null) throw new InvalidOperationException("Unable to open registry key for startup.");
+
+                string executablePath = Assembly.GetEntryAssembly()?.Location ?? throw new InvalidOperationException("Executable path could not be determined.");
+                key.SetValue(AppName, $"\"{executablePath}\"");
             }
         }
         catch (Exception ex)
         {
-            throw new Exception($"Failed to enable startup: {ex.Message}", ex);
+            throw new InvalidOperationException($"Failed to enable startup: {ex.Message}", ex);
         }
     }
 
@@ -51,15 +49,13 @@ internal class StartupService : IStartupService
         {
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey(RegistryKeyPath, true))
             {
-                if (key != null)
-                {
-                    key.DeleteValue(AppName, false);
-                }
+                if (key == null) throw new InvalidOperationException("Unable to open registry key for startup.");
+                key.DeleteValue(AppName, false);
             }
         }
         catch (Exception ex)
         {
-            throw new Exception($"Failed to disable startup: {ex.Message}", ex);
+            throw new InvalidOperationException($"Failed to disable startup: {ex.Message}", ex);
         }
     }
 }

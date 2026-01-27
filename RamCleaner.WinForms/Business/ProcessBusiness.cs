@@ -1,4 +1,5 @@
-﻿using RamCleaner.WinForms.Core.Models;
+﻿using Microsoft.Extensions.Logging;
+using RamCleaner.WinForms.Core.Models;
 using RamCleaner.WinForms.Core.Services;
 using System.Diagnostics;
 using System.Linq;
@@ -9,6 +10,13 @@ namespace RamCleaner.WinForms.Business;
 
 internal class ProcessBusiness : IProcessService
 {
+    private readonly ILogger<ProcessBusiness>? _logger;
+
+    public ProcessBusiness(ILogger<ProcessBusiness>? logger = null)
+    {
+        _logger = logger;
+    }
+
     public async Task<System.Collections.Generic.IReadOnlyList<ProcessInfo>> GetHighUsageProcessesAsync(long thresholdBytes, CancellationToken ct = default)
     {
         return await Task.Run(() =>
@@ -28,17 +36,37 @@ internal class ProcessBusiness : IProcessService
 
                     if (usage > thresholdBytes)
                     {
-                        processList.Add(new ProcessInfo(proc.Id, proc.ProcessName, usage, (usage / 1024 / 1024).ToString() + " MB"));
+                        string display = FormatBytes(usage);
+                        processList.Add(new ProcessInfo(proc.Id, proc.ProcessName, usage, display));
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    // Process may exit or be inaccessible; log and continue
+                    _logger?.LogDebug(ex, "Ignored process while enumerating");
+                }
                 finally
                 {
-                    try { proc.Dispose(); } catch { }
+                    try { proc.Dispose(); } catch (Exception ex) { _logger?.LogDebug(ex, "Failed disposing process"); }
                 }
             }
 
             return processList.OrderByDescending(p => p.MemoryUsageBytes).ToList() as System.Collections.Generic.IReadOnlyList<ProcessInfo>;
         }, ct);
+    }
+
+    private static string FormatBytes(long bytes)
+    {
+        string[] sizes = { "B", "KB", "MB", "GB" };
+        double len = bytes;
+        int order = 0;
+
+        while (len >= 1024 && order < sizes.Length - 1)
+        {
+            order++;
+            len = len / 1024;
+        }
+
+        return $"{len:0.##} {sizes[order]}";
     }
 }

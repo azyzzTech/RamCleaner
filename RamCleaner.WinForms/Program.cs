@@ -24,13 +24,13 @@ internal static class Program
             .ConfigureServices((context, services) =>
             {
                 services.AddLogging();
+                // Provide a shared HttpClient instance for simple HTTP calls
+                services.AddSingleton<System.Net.Http.HttpClient>();
                 services.AddSingleton<IProcessService, ProcessBusiness>();
                 services.AddSingleton<IRamCleanerService, RamBusiness>();
                 services.AddSingleton<IStartupService, StartupService>();
                 services.AddSingleton<IAuthService, DiscordAuth>();
                 services.AddSingleton<ILocalizationService, LocalizationService>();
-                services.AddTransient<LoginForm>();
-                services.AddTransient<MainForm>();
                 services.AddTransient<LoginForm>();
                 services.AddTransient<MainForm>();
             })

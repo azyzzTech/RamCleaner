@@ -27,7 +27,8 @@ internal partial class MainForm : Form
     private System.Windows.Forms.Timer _timer = new();
     private System.Windows.Forms.Timer _refreshTimer = new();
     private bool _isClosing = false;
-    private bool _isTurkish = CultureInfo.CurrentUICulture.Name.StartsWith("tr");
+    // guard to prevent overlapping timer executions
+    private int _isTickRunning = 0;
     private readonly IRamCleanerService _ramCleanerService;
     private readonly IProcessService _processService;
     private readonly IStartupService _startupService;
@@ -87,7 +88,7 @@ internal partial class MainForm : Form
         {
             if (!chkAutoClean.Checked)
             {
-                await LoadProcessesAsync();
+                try { await LoadProcessesAsync(); } catch { }
             }
         };
         _refreshTimer.Start();
@@ -163,41 +164,7 @@ internal partial class MainForm : Form
         UpdateRamThresholdInfo();
         UpdateIntervalInfo();
     }
-
-    private void ApplyResourcesRecursively(System.ComponentModel.ComponentResourceManager rm, Control ctrl)
-    {
-        foreach (Control child in ctrl.Controls)
-        {
-            if (!string.IsNullOrEmpty(child.Name))
-                rm.ApplyResources(child, child.Name);
-
-            if (child.HasChildren)
-                ApplyResourcesRecursively(rm, child);
-        }
-
-        // ToolStrip items
-        if (ctrl is Form f)
-        {
-            foreach (ToolStripItem item in GetAllToolStripItems(f))
-            {
-                if (!string.IsNullOrEmpty(item.Name))
-                    rm.ApplyResources(item, item.Name);
-            }
-        }
-    }
-
-    private System.Collections.Generic.IEnumerable<ToolStripItem> GetAllToolStripItems(Control root)
-    {
-        var list = new System.Collections.Generic.List<ToolStripItem>();
-        foreach (Control c in root.Controls)
-        {
-            if (c is ToolStrip ts)
-                list.AddRange(ts.Items.Cast<ToolStripItem>());
-            if (c.HasChildren)
-                list.AddRange(GetAllToolStripItems(c));
-        }
-        return list;
-    }
+    
 
     private void CmbLanguage_SelectedIndexChanged(object? sender, EventArgs e)
     {
@@ -274,16 +241,18 @@ internal partial class MainForm : Form
 
             SetupListViewColumns();
         }
+        catch (OperationCanceledException)
+        {
+            _logger?.LogInformation("LoadProcessesAsync canceled");
+        }
         catch (Exception ex)
         {
             _logger?.LogError(ex, "Failed to load processes");
-            string errorMsg = _isTurkish ?
-                $"Hata oluştu: {ex.Message}" :
-                $"An error occurred: {ex.Message}";
+            string errorMsg = $"{Properties.Resources.GenericErrorMessage}: {ex.Message}";
 
             lblStatus.Text = errorMsg;
 
-            MessageBox.Show(errorMsg, _isTurkish ? "Hata" : "Error",
+            MessageBox.Show(errorMsg, Properties.Resources.ErrorTitle,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
         }
@@ -326,15 +295,11 @@ internal partial class MainForm : Form
             _timer.Tick += Timer_Tick;
             _timer.Start();
 
-            lblStatus.Text = _isTurkish ?
-                $"Otomatik temizleme aktif: Her {intervalMinutes} dakikada bir" :
-                $"Auto clean active: Every {intervalMinutes} minute(s)";
+            lblStatus.Text = string.Format(Properties.Resources.Status_AutoCleanEnabled, intervalMinutes);
         }
         else
         {
-            lblStatus.Text = _isTurkish ?
-                "Otomatik temizleme devre dışı" :
-                "Auto clean disabled";
+            lblStatus.Text = Properties.Resources.Status_AutoCleanDisabled;
         }
 
         numInterval.Enabled = chkAutoClean.Checked;
@@ -342,26 +307,34 @@ internal partial class MainForm : Form
 
     private async void Timer_Tick(object? sender, EventArgs e)
     {
-        if (chkAutoClean.Checked)
+        if (!chkAutoClean.Checked)
+            return;
+
+        // prevent overlapping ticks
+        if (System.Threading.Interlocked.Exchange(ref _isTickRunning, 1) == 1)
+            return;
+
+        try
         {
-            try
-            {
-                long thresholdMB = (long)numRamThreshold.Value;
-                long thresholdBytes = thresholdMB * 1024 * 1024;
-                var highUsageApps = await _processService.GetHighUsageProcessesAsync(thresholdBytes);
+            long thresholdMB = (long)numRamThreshold.Value;
+            long thresholdBytes = thresholdMB * 1024 * 1024;
+            var highUsageApps = await _processService.GetHighUsageProcessesAsync(thresholdBytes);
 
-                if (highUsageApps.Count > 0)
-                {
-                    var processNames = highUsageApps.Select(p => p.Name).ToList();
-                    await _ramCleanerService.CleanMemoryAsync(processNames);
-
-                    lblStatus.Text = string.Format(Properties.Resources.Status_AutoCleaned, highUsageApps.Count);
-                }
-            }
-            catch (Exception ex)
+            if (highUsageApps.Count > 0)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                var processNames = highUsageApps.Select(p => p.Name).ToList();
+                await _ramCleanerService.CleanMemoryAsync(processNames);
+
+                lblStatus.Text = string.Format(Properties.Resources.Status_AutoCleaned, highUsageApps.Count);
             }
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex, "Auto-clean failed");
+        }
+        finally
+        {
+            System.Threading.Interlocked.Exchange(ref _isTickRunning, 0);
         }
     }
 
@@ -384,16 +357,12 @@ internal partial class MainForm : Form
             if (chkStartup.Checked)
             {
                 _startupService.EnableStartup();
-                lblStatus.Text = _isTurkish ?
-                    "Windows ile başlatma etkinleştirildi" :
-                    "Start with Windows enabled";
+                lblStatus.Text = Properties.Resources.StartupEnabled;
             }
             else
             {
                 _startupService.DisableStartup();
-                lblStatus.Text = _isTurkish ?
-                    "Windows ile başlatma devre dışı bırakıldı" :
-                    "Start with Windows disabled";
+                lblStatus.Text = Properties.Resources.StartupDisabled;
             }
         }
         catch (Exception ex)
@@ -417,18 +386,16 @@ internal partial class MainForm : Form
             _timer.Interval = intervalMinutes * 60000;
             _timer.Start();
 
-            lblStatus.Text = _isTurkish ?
-                $"Otomatik temizleme aktif: Her {intervalMinutes} dakikada bir" :
-                $"Auto clean active: Every {intervalMinutes} minute(s)";
+            lblStatus.Text = string.Format(Properties.Resources.Status_AutoCleanEnabled, intervalMinutes);
         }
     }
 
     private void UpdateIntervalInfo()
     {
         int minutes = (int)numInterval.Value;
-        lblIntervalInfo.Text = _isTurkish ?
-            $"{minutes} dakika" :
-            $"{minutes} minute{(minutes != 1 ? "s" : "")}";
+        lblIntervalInfo.Text = minutes == 1 ?
+            string.Format(Properties.Resources.LabelInterval + " {0}", minutes) :
+            string.Format(Properties.Resources.LabelInterval + " {0}", minutes);
     }
 
     private async void BtnClean_Click(object sender, EventArgs e)
@@ -451,15 +418,11 @@ internal partial class MainForm : Form
         {
             SetLoadingState(true);
 
-            lblStatus.Text = _isTurkish ?
-                "Bellek temizleniyor..." :
-                "Cleaning memory...";
+            lblStatus.Text = Properties.Resources.Status_Cleaning;
 
             await _ramCleanerService.CleanMemoryAsync(selectedProcesses);
 
-            lblStatus.Text = _isTurkish ?
-                $"Bellek optimize edildi! {selectedProcesses.Count} uygulama temizlendi." :
-                $"Memory optimized! Cleaned {selectedProcesses.Count} application(s).";
+            lblStatus.Text = string.Format(Properties.Resources.Msg_CleanedApplications, selectedProcesses.Count);
 
             await System.Threading.Tasks.Task.Delay(500);
             await LoadProcessesAsync();
