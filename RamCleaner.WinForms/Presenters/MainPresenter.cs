@@ -5,6 +5,10 @@ namespace RamCleaner.WinForms.Presenters
 {
     public class MainPresenter : IMainPresenter
     {
+        /// <summary>
+        /// Presenter that mediates between the UI (MainForm) and application services.
+        /// Keeps UI code thin by exposing simple operations the form can call.
+        /// </summary>
         private readonly IProcessService _processService;
         private readonly IRamCleanerService _ramCleanerService;
         private readonly IStartupService _startupService;

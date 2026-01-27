@@ -8,6 +8,9 @@ namespace RamCleaner.WinForms.Core.Services
     {
         private readonly ResourceManager _resourceManager;
 
+        /// <summary>
+        /// Service for applying cultures to forms and discovering available cultures.
+        /// </summary>
         public LocalizationService()
         {
             _resourceManager = RamCleaner.WinForms.Properties.Resources.ResourceManager;

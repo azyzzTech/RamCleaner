@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace RamCleaner.WinForms.Forms;
 
+/// <summary>
+/// Login form that triggers Discord authentication and reports status to the user.
+/// </summary>
 internal partial class LoginForm : Form
 {
     private readonly IAuthService _auth_service;

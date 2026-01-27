@@ -4,11 +4,17 @@ using System.Reflection;
 
 namespace RamCleaner.WinForms.Services;
 
+/// <summary>
+/// Service that manages Windows startup registration for the application using the current user's registry.
+/// </summary>
 internal class StartupService : IStartupService
 {
     private const string RegistryKeyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
     private const string AppName = "RamCleaner";
 
+    /// <summary>
+    /// Checks whether the application is registered to run on Windows startup for the current user.
+    /// </summary>
     public bool IsStartupEnabled()
     {
         try
@@ -24,6 +30,9 @@ internal class StartupService : IStartupService
         }
     }
 
+    /// <summary>
+    /// Enables application startup by writing to the CurrentUser Run registry key.
+    /// </summary>
     public void EnableStartup()
     {
         try
@@ -42,6 +51,9 @@ internal class StartupService : IStartupService
         }
     }
 
+    /// <summary>
+    /// Disables application startup by removing the value from the CurrentUser Run registry key.
+    /// </summary>
     public void DisableStartup()
     {
         try

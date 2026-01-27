@@ -1,5 +1,8 @@
 ﻿namespace RamCleaner.WinForms.Core.Models;
 
+/// <summary>
+/// Lightweight model describing a process and its memory usage for UI purposes.
+/// </summary>
 internal class ProcessModel
 {
     internal int Id { get; set; }

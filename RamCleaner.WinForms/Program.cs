@@ -8,6 +8,10 @@ using RamCleaner.WinForms.Services;
 
 namespace RamCleaner.WinForms;
 
+/// <summary>
+/// Application entry point and host configuration.
+/// Configures dependency injection and starts the WinForms application.
+/// </summary>
 internal static class Program
 {
     /// <summary>

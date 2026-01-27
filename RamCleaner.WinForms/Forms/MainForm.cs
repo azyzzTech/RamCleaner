@@ -6,6 +6,9 @@ using System.Runtime.InteropServices;
 
 namespace RamCleaner.WinForms.Forms;
 
+/// <summary>
+/// Main application window displaying process list and controls for cleaning and configuration.
+/// </summary>
 internal partial class MainForm : Form
 {
     [DllImport("uxtheme.dll", CharSet = CharSet.Unicode)]

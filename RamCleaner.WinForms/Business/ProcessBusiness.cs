@@ -4,15 +4,26 @@ using System.Diagnostics;
 
 namespace RamCleaner.WinForms.Business;
 
+/// <summary>
+/// Service responsible for enumerating system processes and returning
+/// processes that exceed a given memory threshold.
+/// </summary>
 internal class ProcessBusiness : IProcessService
 {
     private readonly ILogger<ProcessBusiness>? _logger;
 
+    /// <summary>
+    /// Creates a new instance of <see cref="ProcessBusiness"/>.
+    /// </summary>
     public ProcessBusiness(ILogger<ProcessBusiness>? logger = null)
     {
         _logger = logger;
     }
 
+    /// <summary>
+    /// Returns a list of processes whose working set exceeds the specified threshold.
+    /// Observes cancellation via <paramref name="ct"/>.
+    /// </summary>
     public async Task<System.Collections.Generic.IReadOnlyList<ProcessInfo>> GetHighUsageProcessesAsync(long thresholdBytes, CancellationToken ct = default)
     {
         return await Task.Run(() =>
@@ -51,6 +62,9 @@ internal class ProcessBusiness : IProcessService
         }, ct);
     }
 
+    /// <summary>
+    /// Formats a byte value into a human-readable string (B/KB/MB/GB).
+    /// </summary>
     private static string FormatBytes(long bytes)
     {
         string[] sizes = { "B", "KB", "MB", "GB" };

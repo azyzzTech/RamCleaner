@@ -9,6 +9,10 @@ namespace RamCleaner.WinForms.InfraStructure;
 
 using RamCleaner.WinForms.Core.Services;
 
+/// <summary>
+/// Handles Discord-based authentication flow using OAuth2. Opens a browser
+/// to Discord's authorization URL and listens locally to capture the access token.
+/// </summary>
 internal class DiscordAuth : IAuthService
 {
     private const string ClientId = "1463542451460636828";
@@ -17,12 +21,19 @@ internal class DiscordAuth : IAuthService
     private readonly System.Net.Http.IHttpClientFactory _httpFactory;
     private readonly ILogger<DiscordAuth>? _logger;
 
+    /// <summary>
+    /// Creates a new DiscordAuth with the provided HTTP factory and optional logger.
+    /// </summary>
     public DiscordAuth(System.Net.Http.IHttpClientFactory httpFactory, ILogger<DiscordAuth>? logger = null)
     {
         _httpFactory = httpFactory ?? throw new ArgumentNullException(nameof(httpFactory));
         _logger = logger;
     }
 
+    /// <summary>
+    /// Executes the full OAuth flow and validates authorization against the remote API.
+    /// Returns true when authorization is successful and within the configured validity period.
+    /// </summary>
     public async Task<bool> FullAuthFlowAsync(System.Threading.CancellationToken ct = default)
     {
         try
@@ -84,6 +95,9 @@ internal class DiscordAuth : IAuthService
         }
     }
 
+    /// <summary>
+    /// Starts a local HTTP listener to capture the access token returned in the browser redirect.
+    /// </summary>
     private async Task<string> ListenForAccessToken(System.Threading.CancellationToken ct = default)
     {
         using var listener = new HttpListener();
