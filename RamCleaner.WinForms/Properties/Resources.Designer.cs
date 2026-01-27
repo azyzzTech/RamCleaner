@@ -59,5 +59,53 @@ namespace RamCleaner.WinForms.Properties {
                 resourceCulture = value;
             }
         }
+
+    // Strongly-typed resource accessors
+    internal static string LoginFailedMessage => ResourceManager.GetString("LoginFailedMessage", resourceCulture);
+    internal static string AuthTitle => ResourceManager.GetString("AuthTitle", resourceCulture);
+    internal static string GenericErrorMessage => ResourceManager.GetString("GenericErrorMessage", resourceCulture);
+    internal static string WaitingForDiscord => ResourceManager.GetString("WaitingForDiscord", resourceCulture);
+    internal static string FormTitle => ResourceManager.GetString("FormTitle", resourceCulture);
+    internal static string ApplicationName => ResourceManager.GetString("ApplicationName", resourceCulture);
+    internal static string BtnCleanText => ResourceManager.GetString("BtnCleanText", resourceCulture);
+    internal static string BtnRefreshText => ResourceManager.GetString("BtnRefreshText", resourceCulture);
+    internal static string BtnSelectAllText => ResourceManager.GetString("BtnSelectAllText", resourceCulture);
+    internal static string BtnSelectNoneText => ResourceManager.GetString("BtnSelectNoneText", resourceCulture);
+    internal static string ChkAutoCleanText => ResourceManager.GetString("ChkAutoCleanText", resourceCulture);
+    internal static string ChkStartupText => ResourceManager.GetString("ChkStartupText", resourceCulture);
+    internal static string LblTitle => ResourceManager.GetString("LblTitle", resourceCulture);
+    internal static string ColumnMemory => ResourceManager.GetString("ColumnMemory", resourceCulture);
+    internal static string NotifyIconText => ResourceManager.GetString("NotifyIconText", resourceCulture);
+    internal static string LnkYoutubeText => ResourceManager.GetString("LnkYoutubeText", resourceCulture);
+    internal static string GroupBoxProcessesText => ResourceManager.GetString("GroupBoxProcessesText", resourceCulture);
+    internal static string ShowMenuText => ResourceManager.GetString("ShowMenuText", resourceCulture);
+    internal static string GroupBoxActionsText => ResourceManager.GetString("GroupBoxActionsText", resourceCulture);
+    internal static string ExitMenuText => ResourceManager.GetString("ExitMenuText", resourceCulture);
+    internal static string LabelInterval => ResourceManager.GetString("LabelInterval", resourceCulture);
+    internal static string LabelProcessesFound => ResourceManager.GetString("LabelProcessesFound", resourceCulture);
+    internal static string LabelTotalMemory => ResourceManager.GetString("LabelTotalMemory", resourceCulture);
+    internal static string LabelRamThreshold => ResourceManager.GetString("LabelRamThreshold", resourceCulture);
+    internal static string ToolTip_Clean => ResourceManager.GetString("ToolTip_Clean", resourceCulture);
+    internal static string ToolTip_Refresh => ResourceManager.GetString("ToolTip_Refresh", resourceCulture);
+    internal static string ToolTip_AutoClean => ResourceManager.GetString("ToolTip_AutoClean", resourceCulture);
+    internal static string ToolTip_Startup => ResourceManager.GetString("ToolTip_Startup", resourceCulture);
+    internal static string ToolTip_Interval => ResourceManager.GetString("ToolTip_Interval", resourceCulture);
+    internal static string ToolTip_ProcessesList => ResourceManager.GetString("ToolTip_ProcessesList", resourceCulture);
+    internal static string Status_LastUpdated => ResourceManager.GetString("Status_LastUpdated", resourceCulture);
+    internal static string Status_Cleaning => ResourceManager.GetString("Status_Cleaning", resourceCulture);
+    internal static string Status_AutoCleanEnabled => ResourceManager.GetString("Status_AutoCleanEnabled", resourceCulture);
+    internal static string Status_AutoCleanDisabled => ResourceManager.GetString("Status_AutoCleanDisabled", resourceCulture);
+    internal static string Msg_SelectApplications => ResourceManager.GetString("Msg_SelectApplications", resourceCulture);
+    internal static string Msg_CleanedApplications => ResourceManager.GetString("Msg_CleanedApplications", resourceCulture);
+    internal static string BtnChangeLanguageText => ResourceManager.GetString("BtnChangeLanguageText", resourceCulture);
+    internal static string ProcessCountFormat => ResourceManager.GetString("ProcessCountFormat", resourceCulture);
+    internal static string Status_AutoCleaned => ResourceManager.GetString("Status_AutoCleaned", resourceCulture);
+    internal static string StartupEnabled => ResourceManager.GetString("StartupEnabled", resourceCulture);
+    internal static string StartupDisabled => ResourceManager.GetString("StartupDisabled", resourceCulture);
+    internal static string StartupChangeFailedFormat => ResourceManager.GetString("StartupChangeFailedFormat", resourceCulture);
+    internal static string ErrorTitle => ResourceManager.GetString("ErrorTitle", resourceCulture);
+    internal static string LinkOpenFailed => ResourceManager.GetString("LinkOpenFailed", resourceCulture);
+    internal static string TrayMinimizedMessage => ResourceManager.GetString("TrayMinimizedMessage", resourceCulture);
+    internal static string TrayTitle => ResourceManager.GetString("TrayTitle", resourceCulture);
     }
 }

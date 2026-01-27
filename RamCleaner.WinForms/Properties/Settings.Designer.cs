@@ -45,5 +45,17 @@ namespace RamCleaner.WinForms.Properties {
                 this["IsAuthorized"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UICulture {
+            get {
+                return ((string)(this["UICulture"]));
+            }
+            set {
+                this["UICulture"] = value;
+            }
+        }
     }
 }

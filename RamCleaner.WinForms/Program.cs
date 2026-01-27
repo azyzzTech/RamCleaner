@@ -28,6 +28,9 @@ internal static class Program
                 services.AddSingleton<IRamCleanerService, RamBusiness>();
                 services.AddSingleton<IStartupService, StartupService>();
                 services.AddSingleton<IAuthService, DiscordAuth>();
+                services.AddSingleton<ILocalizationService, LocalizationService>();
+                services.AddTransient<LoginForm>();
+                services.AddTransient<MainForm>();
                 services.AddTransient<LoginForm>();
                 services.AddTransient<MainForm>();
             })
@@ -35,6 +38,23 @@ internal static class Program
 
         using var scope = host.Services.CreateScope();
         var services = scope.ServiceProvider;
+
+        // Restore saved culture before creating forms (guard in case setting doesn't exist)
+        try
+        {
+            var savedCulture = RamCleaner.WinForms.Properties.Settings.Default["UICulture"] as string;
+            if (!string.IsNullOrEmpty(savedCulture))
+            {
+                var culture = new System.Globalization.CultureInfo(savedCulture);
+                System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+                System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+                RamCleaner.WinForms.Properties.Resources.Culture = culture;
+            }
+        }
+        catch (System.Configuration.SettingsPropertyNotFoundException)
+        {
+            // setting not present; ignore
+        }
 
         var login = services.GetRequiredService<LoginForm>();
 

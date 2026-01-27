@@ -184,6 +184,23 @@ partial class MainForm
         btnRefresh.UseVisualStyleBackColor = false;
         btnRefresh.Click += BtnRefresh_Click;
         // 
+        // btnChangeLanguage
+        // 
+        btnChangeLanguage = new Button();
+        btnChangeLanguage.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btnChangeLanguage.BackColor = Color.FromArgb(25, 25, 25);
+        btnChangeLanguage.FlatStyle = FlatStyle.Flat;
+        btnChangeLanguage.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+        btnChangeLanguage.ForeColor = Color.White;
+        btnChangeLanguage.Location = new Point(594, 154);
+        btnChangeLanguage.Name = "btnChangeLanguage";
+        btnChangeLanguage.Size = new Size(184, 28);
+        btnChangeLanguage.TabIndex = 7;
+        btnChangeLanguage.Text = "Change Language";
+        btnChangeLanguage.UseVisualStyleBackColor = false;
+        btnChangeLanguage.Click += BtnChangeLanguage_Click;
+        Controls.Add(btnChangeLanguage);
+        // 
         // lnkYoutube
         // 
         lnkYoutube.ActiveLinkColor = Color.Red;
@@ -542,6 +559,7 @@ partial class MainForm
     private System.Windows.Forms.NumericUpDown numRamThreshold;
     private System.Windows.Forms.Label label4;
     private System.Windows.Forms.Label lblRamThresholdInfo;
+    private System.Windows.Forms.Button btnChangeLanguage;
     private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
     private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
     private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;

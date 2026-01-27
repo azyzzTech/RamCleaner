@@ -6,12 +6,12 @@ namespace RamCleaner.WinForms.Forms;
 
 internal partial class LoginForm : Form
 {
-    private readonly IAuthService _authService;
+    private readonly IAuthService _auth_service;
     private bool _isTurkish = CultureInfo.CurrentUICulture.Name.StartsWith("tr");
 
     public LoginForm(IAuthService authService)
     {
-        _authService = authService;
+        _auth_service = authService;
 
         InitializeComponent();
 
@@ -26,7 +26,7 @@ internal partial class LoginForm : Form
 
         try
         {
-            bool isAuthorized = await _authService.FullAuthFlowAsync();
+            bool isAuthorized = await _auth_service.FullAuthFlowAsync();
 
             if (isAuthorized)
             {
@@ -35,12 +35,10 @@ internal partial class LoginForm : Form
             }
             else
             {
-                MessageBox.Show(_isTurkish ?
-                    "Giris basarisiz veya yetkiniz yok!" :
-                    "Login failed or insufficient permissions!",
-                    "SupremeLegends Auth", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Properties.Resources.LoginFailedMessage,
+                    Properties.Resources.AuthTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 btnLogin.Enabled = true;
-                lblStatus.Text = "Hata!";
+                lblStatus.Text = Properties.Resources.GenericErrorMessage;
             }
         }
         catch (Exception ex)

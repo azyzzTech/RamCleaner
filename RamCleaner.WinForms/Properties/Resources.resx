@@ -117,4 +117,145 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="LoginFailedMessage" xml:space="preserve">
+    <value>Login failed or insufficient permissions!</value>
+  </data>
+  <data name="AuthTitle" xml:space="preserve">
+    <value>SupremeLegends Auth</value>
+  </data>
+  <data name="WaitingForDiscord" xml:space="preserve">
+    <value>Waiting for Discord...</value>
+  </data>
+  <data name="GenericErrorMessage" xml:space="preserve">
+    <value>An error occurred</value>
+  </data>
+  <data name="FormTitle" xml:space="preserve">
+    <value>RAM Cleaner</value>
+  </data>
+  <data name="ApplicationName" xml:space="preserve">
+    <value>Application Name</value>
+  </data>
+  <data name="BtnCleanText" xml:space="preserve">
+    <value>Clean Now</value>
+  </data>
+  <data name="BtnRefreshText" xml:space="preserve">
+    <value>Refresh List</value>
+  </data>
+  <data name="BtnSelectAllText" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="BtnSelectNoneText" xml:space="preserve">
+    <value>Select None</value>
+  </data>
+  <data name="ChkAutoCleanText" xml:space="preserve">
+    <value>Auto Clean</value>
+  </data>
+  <data name="ChkStartupText" xml:space="preserve">
+    <value>Start with Windows</value>
+  </data>
+  <data name="LblTitle" xml:space="preserve">
+    <value>RAM Cleaner</value>
+  </data>
+  <data name="ColumnMemory" xml:space="preserve">
+    <value>Memory Usage</value>
+  </data>
+  <data name="NotifyIconText" xml:space="preserve">
+    <value>RAM Cleaner</value>
+  </data>
+  <data name="LnkYoutubeText" xml:space="preserve">
+    <value>Follow Us: YouTube</value>
+  </data>
+  <data name="GroupBoxProcessesText" xml:space="preserve">
+    <value>High Memory Usage Processes</value>
+  </data>
+  <data name="ShowMenuText" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="GroupBoxActionsText" xml:space="preserve">
+    <value>Auto Clean Settings</value>
+  </data>
+  <data name="ExitMenuText" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="LabelInterval" xml:space="preserve">
+    <value>Interval:</value>
+  </data>
+  <data name="LabelProcessesFound" xml:space="preserve">
+    <value>Processes Found:</value>
+  </data>
+  <data name="LabelTotalMemory" xml:space="preserve">
+    <value>Total Memory:</value>
+  </data>
+  <data name="LabelRamThreshold" xml:space="preserve">
+    <value>RAM Threshold:</value>
+  </data>
+  <data name="ToolTip_Clean" xml:space="preserve">
+    <value>Optimizes memory usage for selected applications</value>
+  </data>
+  <data name="ToolTip_Refresh" xml:space="preserve">
+    <value>Refreshes the application list</value>
+  </data>
+  <data name="ToolTip_AutoClean" xml:space="preserve">
+    <value>Automatically cleans memory at specified intervals</value>
+  </data>
+  <data name="ToolTip_Startup" xml:space="preserve">
+    <value>Automatically start the application when Windows starts</value>
+  </data>
+  <data name="ToolTip_Interval" xml:space="preserve">
+    <value>Auto clean interval (minutes)</value>
+  </data>
+  <data name="ToolTip_ProcessesList" xml:space="preserve">
+    <value>Check/uncheck applications to clean</value>
+  </data>
+  <data name="Status_LastUpdated" xml:space="preserve">
+    <value>Last updated: {0}</value>
+  </data>
+  <data name="Status_Cleaning" xml:space="preserve">
+    <value>Cleaning memory...</value>
+  </data>
+  <data name="Status_AutoCleanEnabled" xml:space="preserve">
+    <value>Auto clean active: Every {0} minute(s)</value>
+  </data>
+  <data name="Status_AutoCleanDisabled" xml:space="preserve">
+    <value>Auto clean disabled</value>
+  </data>
+  <data name="Msg_SelectApplications" xml:space="preserve">
+    <value>Please select applications to clean.</value>
+  </data>
+  <data name="Msg_CleanedApplications" xml:space="preserve">
+    <value>Memory optimized! Cleaned {0} application(s).</value>
+  </data>
+  <data name="BtnChangeLanguageText" xml:space="preserve">
+    <value>Change Language</value>
+  </data>
+  <data name="ProcessCountFormat" xml:space="preserve">
+    <value>{0} processes</value>
+  </data>
+  <data name="ProcessCountFormat.tr" xml:space="preserve">
+    <value>{0} süreç</value>
+  </data>
+  <data name="Status_AutoCleaned" xml:space="preserve">
+    <value>Auto cleaned: {0} application(s)</value>
+  </data>
+  <data name="StartupEnabled" xml:space="preserve">
+    <value>Start with Windows enabled</value>
+  </data>
+  <data name="StartupDisabled" xml:space="preserve">
+    <value>Start with Windows disabled</value>
+  </data>
+  <data name="StartupChangeFailedFormat" xml:space="preserve">
+    <value>Failed to change startup setting: {0}</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="LinkOpenFailed" xml:space="preserve">
+    <value>Could not open link: {0}</value>
+  </data>
+  <data name="TrayMinimizedMessage" xml:space="preserve">
+    <value>Application minimized to system tray. Double-click to restore.</value>
+  </data>
+  <data name="TrayTitle" xml:space="preserve">
+    <value>RAM Cleaner</value>
+  </data>
 </root>
