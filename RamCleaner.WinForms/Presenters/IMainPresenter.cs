@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using RamCleaner.WinForms.Core.Services;
 
 namespace RamCleaner.WinForms.Presenters

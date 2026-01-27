@@ -1,10 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using RamCleaner.WinForms.Core.Models;
 using RamCleaner.WinForms.Core.Services;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace RamCleaner.WinForms.Business;
 

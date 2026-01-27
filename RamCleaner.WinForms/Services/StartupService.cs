@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using RamCleaner.WinForms.Core.Services;
-using System;
 using System.Reflection;
 
 namespace RamCleaner.WinForms.Services;

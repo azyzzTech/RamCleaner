@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Globalization;
-using System.Windows.Forms;
 
 namespace RamCleaner.WinForms.Core.Services
 {

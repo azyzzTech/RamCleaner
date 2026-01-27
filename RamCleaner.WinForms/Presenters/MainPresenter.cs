@@ -1,8 +1,5 @@
 using Microsoft.Extensions.Logging;
 using RamCleaner.WinForms.Core.Services;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace RamCleaner.WinForms.Presenters
 {
