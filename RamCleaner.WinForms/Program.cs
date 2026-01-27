@@ -24,8 +24,8 @@ internal static class Program
             .ConfigureServices((context, services) =>
             {
                 services.AddLogging();
-                // Provide a shared HttpClient instance for simple HTTP calls
-                services.AddSingleton<System.Net.Http.HttpClient>();
+                // Register IHttpClientFactory and related helpers
+                services.AddHttpClient();
                 services.AddSingleton<IProcessService, ProcessBusiness>();
                 services.AddSingleton<IRamCleanerService, RamBusiness>();
                 services.AddSingleton<IStartupService, StartupService>();
@@ -33,6 +33,7 @@ internal static class Program
                 services.AddSingleton<ILocalizationService, LocalizationService>();
                 services.AddTransient<LoginForm>();
                 services.AddTransient<MainForm>();
+                services.AddTransient<RamCleaner.WinForms.Presenters.IMainPresenter, RamCleaner.WinForms.Presenters.MainPresenter>();
             })
             .Build();
 

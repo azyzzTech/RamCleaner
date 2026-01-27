@@ -1,19 +1,12 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
-using RamCleaner.WinForms.Business;
-using RamCleaner.WinForms.Core.Services;
-using RamCleaner.WinForms.Services;
+﻿using RamCleaner.WinForms.Core.Services;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -29,18 +22,14 @@ internal partial class MainForm : Form
     private bool _isClosing = false;
     // guard to prevent overlapping timer executions
     private int _isTickRunning = 0;
-    private readonly IRamCleanerService _ramCleanerService;
-    private readonly IProcessService _processService;
-    private readonly IStartupService _startupService;
+    private readonly RamCleaner.WinForms.Presenters.IMainPresenter _presenter;
     private readonly ILogger<MainForm> _logger;
     private readonly ILocalizationService _localizationService;
     private System.Windows.Forms.ComboBox _cmbLanguage;
 
-    public MainForm(IRamCleanerService ramCleanerService, IProcessService processService, IStartupService startupService, ILocalizationService localizationService, ILogger<MainForm> logger)
+    public MainForm(RamCleaner.WinForms.Presenters.IMainPresenter presenter, ILocalizationService localizationService, ILogger<MainForm> logger)
     {
-        _ramCleanerService = ramCleanerService;
-        _processService = processService;
-        _startupService = startupService;
+        _presenter = presenter;
         // fallback if DI didn't provide localizationService (defensive)
         _localizationService = localizationService ?? new LocalizationService();
         _logger = logger;
@@ -86,7 +75,7 @@ internal partial class MainForm : Form
         _refreshTimer.Interval = 60000;
         _refreshTimer.Tick += async (s, e) =>
         {
-            if (!chkAutoClean.Checked)
+            if (chkAutoClean.Checked)
             {
                 try { await LoadProcessesAsync(); } catch { }
             }
@@ -122,7 +111,7 @@ internal partial class MainForm : Form
     {
         try
         {
-            chkStartup.Checked = _startupService.IsStartupEnabled();
+            chkStartup.Checked = _presenter.IsStartupEnabled();
         }
         catch
         {
@@ -216,7 +205,7 @@ internal partial class MainForm : Form
 
             long thresholdMB = (long)numRamThreshold.Value;
             long thresholdBytes = thresholdMB * 1024 * 1024;
-            var highUsageApps = await _processService.GetHighUsageProcessesAsync(thresholdBytes, ct);
+            var highUsageApps = await _presenter.GetHighUsageProcessesAsync(thresholdBytes, ct);
 
             long totalMemory = 0;
 
@@ -318,12 +307,12 @@ internal partial class MainForm : Form
         {
             long thresholdMB = (long)numRamThreshold.Value;
             long thresholdBytes = thresholdMB * 1024 * 1024;
-            var highUsageApps = await _processService.GetHighUsageProcessesAsync(thresholdBytes);
+                var highUsageApps = await _presenter.GetHighUsageProcessesAsync(thresholdBytes);
 
             if (highUsageApps.Count > 0)
             {
                 var processNames = highUsageApps.Select(p => p.Name).ToList();
-                await _ramCleanerService.CleanMemoryAsync(processNames);
+                await _presenter.CleanProcessesAsync(processNames);
 
                 lblStatus.Text = string.Format(Properties.Resources.Status_AutoCleaned, highUsageApps.Count);
             }
@@ -352,19 +341,19 @@ internal partial class MainForm : Form
 
     private void ChkStartup_CheckedChanged(object sender, EventArgs e)
     {
-        try
-        {
-            if (chkStartup.Checked)
+            try
             {
-                _startupService.EnableStartup();
-                lblStatus.Text = Properties.Resources.StartupEnabled;
+                if (chkStartup.Checked)
+                {
+                    _presenter.EnableStartup();
+                    lblStatus.Text = Properties.Resources.StartupEnabled;
+                }
+                else
+                {
+                    _presenter.DisableStartup();
+                    lblStatus.Text = Properties.Resources.StartupDisabled;
+                }
             }
-            else
-            {
-                _startupService.DisableStartup();
-                lblStatus.Text = Properties.Resources.StartupDisabled;
-            }
-        }
         catch (Exception ex)
         {
             chkStartup.Checked = !chkStartup.Checked;
@@ -420,7 +409,7 @@ internal partial class MainForm : Form
 
             lblStatus.Text = Properties.Resources.Status_Cleaning;
 
-            await _ramCleanerService.CleanMemoryAsync(selectedProcesses);
+            await _presenter.CleanProcessesAsync(selectedProcesses);
 
             lblStatus.Text = string.Format(Properties.Resources.Msg_CleanedApplications, selectedProcesses.Count);
 

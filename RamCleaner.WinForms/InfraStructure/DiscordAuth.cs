@@ -15,12 +15,12 @@ internal class DiscordAuth : IAuthService
     private const string ClientId = "1463542451460636828";
     private const string RedirectUri = "http://localhost:5000/";
     private const string ApiBaseUrl = "https://ram-cleaner-dc-auth-api.onrender.com";
-    private readonly System.Net.Http.HttpClient _httpClient;
+    private readonly System.Net.Http.IHttpClientFactory _httpFactory;
     private readonly ILogger<DiscordAuth>? _logger;
 
-    public DiscordAuth(System.Net.Http.HttpClient httpClient, ILogger<DiscordAuth>? logger = null)
+    public DiscordAuth(System.Net.Http.IHttpClientFactory httpFactory, ILogger<DiscordAuth>? logger = null)
     {
-        _httpClient = httpClient;
+        _httpFactory = httpFactory ?? throw new ArgumentNullException(nameof(httpFactory));
         _logger = logger;
     }
 
@@ -51,7 +51,8 @@ internal class DiscordAuth : IAuthService
             if (string.IsNullOrEmpty(accessToken))
                 return false;
 
-            var response = await _httpClient.GetAsync($"{ApiBaseUrl}/check-auth?access_token={accessToken}", ct);
+            var client = _httpFactory.CreateClient();
+            var response = await client.GetAsync($"{ApiBaseUrl}/check-auth?access_token={accessToken}", ct);
 
             if (response.IsSuccessStatusCode)
             {
