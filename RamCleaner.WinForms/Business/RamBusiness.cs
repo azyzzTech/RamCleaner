@@ -1,24 +1,40 @@
-﻿using RamCleaner.WinForms.InfraStructure;
+﻿using RamCleaner.WinForms.Core.Services;
+using RamCleaner.WinForms.InfraStructure;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RamCleaner.WinForms.Business;
 
-internal class RamBusiness
+internal class RamBusiness : IRamCleanerService
 {
-    internal void CleanMemory(IEnumerable<string> processNames = null)
+    public Task CleanMemoryAsync(IEnumerable<string>? processNames = null, CancellationToken ct = default)
     {
-        var processes = Process.GetProcesses();
-
-        foreach (var proc in processes)
+        return Task.Run(() =>
         {
-            try
+            var processes = Process.GetProcesses();
+
+            foreach (var proc in processes)
             {
-                if (processNames == null || processNames.Contains(proc.ProcessName))
+                if (ct.IsCancellationRequested)
+                    break;
+
+                try
                 {
-                    Win32Api.EmptyWorkingSet(proc.Handle);
+                    if (processNames == null || processNames.Contains(proc.ProcessName))
+                    {
+                        Win32Api.EmptyWorkingSet(proc.Handle);
+                    }
+                }
+                catch { }
+                finally
+                {
+                    try { proc.Dispose(); } catch { }
                 }
             }
-            catch { }
-        }
+        }, ct);
     }
 }

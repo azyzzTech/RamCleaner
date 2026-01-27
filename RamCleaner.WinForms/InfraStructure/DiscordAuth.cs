@@ -7,14 +7,16 @@ using System.Text;
 
 namespace RamCleaner.WinForms.InfraStructure;
 
-internal class DiscordAuth
+using RamCleaner.WinForms.Core.Services;
+
+internal class DiscordAuth : IAuthService
 {
     private bool _isTurkish = CultureInfo.CurrentUICulture.Name.StartsWith("tr");
     private const string ClientId = "1463542451460636828";
     private const string RedirectUri = "http://localhost:5000/";
     private const string ApiBaseUrl = "https://ram-cleaner-dc-auth-api.onrender.com";
 
-    public async Task<bool> FullAuthFlowAsync()
+    public async Task<bool> FullAuthFlowAsync(System.Threading.CancellationToken ct = default)
     {
         DateTime lastAuth = Properties.Settings.Default.LastAuthDate;
         bool isStillValid = (DateTime.Now - lastAuth).TotalDays < 7;
@@ -42,7 +44,7 @@ internal class DiscordAuth
                 return false;
 
             using var client = new HttpClient();
-            var response = await client.GetAsync($"{ApiBaseUrl}/check-auth?access_token={accessToken}");
+            var response = await client.GetAsync($"{ApiBaseUrl}/check-auth?access_token={accessToken}", ct);
 
             if (response.IsSuccessStatusCode)
             {

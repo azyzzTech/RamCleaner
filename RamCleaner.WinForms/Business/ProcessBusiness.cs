@@ -1,38 +1,44 @@
 ﻿using RamCleaner.WinForms.Core.Models;
+using RamCleaner.WinForms.Core.Services;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RamCleaner.WinForms.Business;
 
-internal class ProcessBusiness
+internal class ProcessBusiness : IProcessService
 {
-    internal List<ProcessModel> GetHighUsageProcesses(long? customThreshold = null)
+    public async Task<System.Collections.Generic.IReadOnlyList<ProcessInfo>> GetHighUsageProcessesAsync(long thresholdBytes, CancellationToken ct = default)
     {
-        var processList = new List<ProcessModel>();
-        long threshold = customThreshold ?? 500L * 1024 * 1024;
-
-        var allProcesses = Process.GetProcesses();
-
-        foreach (var proc in allProcesses)
+        return await Task.Run(() =>
         {
-            try
-            {
-                long usage = proc.WorkingSet64;
+            var processList = new System.Collections.Generic.List<ProcessInfo>();
 
-                if (usage > threshold)
+            var allProcesses = Process.GetProcesses();
+
+            foreach (var proc in allProcesses)
+            {
+                if (ct.IsCancellationRequested)
+                    break;
+
+                try
                 {
-                    processList.Add(new ProcessModel
+                    long usage = proc.WorkingSet64;
+
+                    if (usage > thresholdBytes)
                     {
-                        Id = proc.Id,
-                        Name = proc.ProcessName,
-                        MemoryUsageBytes = usage,
-                        MemoryUsageDisplay = (usage / 1024 / 1024).ToString() + " MB",
-                        IsSelected = true
-                    });
+                        processList.Add(new ProcessInfo(proc.Id, proc.ProcessName, usage, (usage / 1024 / 1024).ToString() + " MB"));
+                    }
+                }
+                catch { }
+                finally
+                {
+                    try { proc.Dispose(); } catch { }
                 }
             }
-            catch { }
-        }
 
-        return processList.OrderByDescending(p => p.MemoryUsageBytes).ToList();
+            return processList.OrderByDescending(p => p.MemoryUsageBytes).ToList() as System.Collections.Generic.IReadOnlyList<ProcessInfo>;
+        }, ct);
     }
 }

@@ -1,42 +1,54 @@
-﻿using RamCleaner.WinForms.InfraStructure;
+﻿using RamCleaner.WinForms.Core.Services;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace RamCleaner.WinForms.Forms;
 
 internal partial class LoginForm : Form
 {
+    private readonly IAuthService _authService;
     private bool _isTurkish = CultureInfo.CurrentUICulture.Name.StartsWith("tr");
-    private readonly DiscordAuth _authManager = new DiscordAuth();
 
-    internal LoginForm()
+    public LoginForm(IAuthService authService)
     {
+        _authService = authService;
+
         InitializeComponent();
 
         this.StartPosition = FormStartPosition.CenterScreen;
         this.FormBorderStyle = FormBorderStyle.FixedDialog;
     }
 
-    internal async void btnLogin_Click(object sender, EventArgs e)
+    private async void btnLogin_Click(object sender, EventArgs e)
     {
         btnLogin.Enabled = false;
         lblStatus.Text = _isTurkish ? "Discord Onayı Bekleniyor..." : "Waiting for Discord...";
 
-        // Tüm akış (Tarayıcı açma + Token yakalama + Rol kontrolü) burada biter
-        bool isAuthorized = await _authManager.FullAuthFlowAsync();
+        try
+        {
+            bool isAuthorized = await _authService.FullAuthFlowAsync();
 
-        if (isAuthorized)
-        {
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            if (isAuthorized)
+            {
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show(_isTurkish ?
+                    "Giris basarisiz veya yetkiniz yok!" :
+                    "Login failed or insufficient permissions!",
+                    "SupremeLegends Auth", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnLogin.Enabled = true;
+                lblStatus.Text = "Hata!";
+            }
         }
-        else
+        catch (Exception ex)
         {
-            MessageBox.Show(_isTurkish ?
-                "Giris basarisiz veya yetkiniz yok!" :
-                "Login failed or insufficient permissions!",
-                "SupremeLegends Auth", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Debug.WriteLine(ex.ToString());
+            MessageBox.Show(_isTurkish ? "Bilinmeyen bir hata oldu" : "An error occurred", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             btnLogin.Enabled = true;
-            lblStatus.Text = "Hata!";
+            lblStatus.Text = _isTurkish ? "Hata!" : "Error";
         }
     }
 }

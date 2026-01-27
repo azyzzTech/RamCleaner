@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualBasic.ApplicationServices;
 using RamCleaner.WinForms.Business;
+using RamCleaner.WinForms.Core.Services;
 using RamCleaner.WinForms.Services;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,10 +29,18 @@ internal partial class MainForm : Form
     private System.Windows.Forms.Timer _refreshTimer = new();
     private bool _isClosing = false;
     private bool _isTurkish = CultureInfo.CurrentUICulture.Name.StartsWith("tr");
-    private RamBusiness _ramBusiness = new();
+    private readonly IRamCleanerService _ramCleanerService;
+    private readonly IProcessService _processService;
+    private readonly IStartupService _startupService;
+    private readonly ILogger<MainForm> _logger;
 
-    internal MainForm()
+    public MainForm(IRamCleanerService ramCleanerService, IProcessService processService, IStartupService startupService, ILogger<MainForm> logger)
     {
+        _ramCleanerService = ramCleanerService;
+        _processService = processService;
+        _startupService = startupService;
+        _logger = logger;
+
         InitializeComponent();
 
         ApplyDarkThemeToListView();
@@ -38,14 +48,14 @@ internal partial class MainForm : Form
         SetupLanguage();
         SetupTooltips();
         LoadStartupState();
-        LoadProcesses();
+        _ = LoadProcessesAsync();
 
         _refreshTimer.Interval = 60000;
-        _refreshTimer.Tick += (s, e) =>
+        _refreshTimer.Tick += async (s, e) =>
         {
             if (!chkAutoClean.Checked)
             {
-                LoadProcesses();
+                await LoadProcessesAsync();
             }
         };
         _refreshTimer.Start();
@@ -79,7 +89,7 @@ internal partial class MainForm : Form
     {
         try
         {
-            chkStartup.Checked = StartupService.IsStartupEnabled();
+            chkStartup.Checked = _startupService.IsStartupEnabled();
         }
         catch
         {
@@ -141,19 +151,18 @@ internal partial class MainForm : Form
             "Check/uncheck applications to clean");
     }
 
-    private void LoadProcesses()
+    private async System.Threading.Tasks.Task LoadProcessesAsync(System.Threading.CancellationToken ct = default)
     {
         try
         {
-            SetLoadingState(false);
+            SetLoadingState(true);
 
             listViewProcesses.BeginUpdate();
             listViewProcesses.Items.Clear();
 
-            ProcessBusiness processBusiness = new();
             long thresholdMB = (long)numRamThreshold.Value;
             long thresholdBytes = thresholdMB * 1024 * 1024;
-            var highUsageApps = processBusiness.GetHighUsageProcesses(thresholdBytes);
+            var highUsageApps = await _processService.GetHighUsageProcessesAsync(thresholdBytes, ct);
 
             long totalMemory = 0;
 
@@ -184,6 +193,7 @@ internal partial class MainForm : Form
         }
         catch (Exception ex)
         {
+            _logger?.LogError(ex, "Failed to load processes");
             string errorMsg = _isTurkish ?
                 $"Hata oluştu: {ex.Message}" :
                 $"An error occurred: {ex.Message}";
@@ -247,31 +257,37 @@ internal partial class MainForm : Form
         numInterval.Enabled = chkAutoClean.Checked;
     }
 
-    private void Timer_Tick(object? sender, EventArgs e)
+    private async void Timer_Tick(object? sender, EventArgs e)
     {
         if (chkAutoClean.Checked)
         {
-            ProcessBusiness processBusiness = new();
-            long thresholdMB = (long)numRamThreshold.Value;
-            long thresholdBytes = thresholdMB * 1024 * 1024;
-            var highUsageApps = processBusiness.GetHighUsageProcesses(thresholdBytes);
-
-            if (highUsageApps.Count > 0)
+            try
             {
-                var processNames = highUsageApps.Select(p => p.Name).ToList();
-                _ramBusiness.CleanMemory(processNames);
+                long thresholdMB = (long)numRamThreshold.Value;
+                long thresholdBytes = thresholdMB * 1024 * 1024;
+                var highUsageApps = await _processService.GetHighUsageProcessesAsync(thresholdBytes);
 
-                lblStatus.Text = _isTurkish ?
-                    $"Otomatik temizlendi: {highUsageApps.Count} uygulama" :
-                    $"Auto cleaned: {highUsageApps.Count} application(s)";
+                if (highUsageApps.Count > 0)
+                {
+                    var processNames = highUsageApps.Select(p => p.Name).ToList();
+                    await _ramCleanerService.CleanMemoryAsync(processNames);
+
+                    lblStatus.Text = _isTurkish ?
+                        $"Otomatik temizlendi: {highUsageApps.Count} uygulama" :
+                        $"Auto cleaned: {highUsageApps.Count} application(s)";
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
             }
         }
     }
 
-    private void NumRamThreshold_ValueChanged(object sender, EventArgs e)
+    private async void NumRamThreshold_ValueChanged(object sender, EventArgs e)
     {
         UpdateRamThresholdInfo();
-        LoadProcesses();
+        await LoadProcessesAsync();
     }
 
     private void UpdateRamThresholdInfo()
@@ -286,14 +302,14 @@ internal partial class MainForm : Form
         {
             if (chkStartup.Checked)
             {
-                StartupService.EnableStartup();
+                _startupService.EnableStartup();
                 lblStatus.Text = _isTurkish ?
                     "Windows ile başlatma etkinleştirildi" :
                     "Start with Windows enabled";
             }
             else
             {
-                StartupService.DisableStartup();
+                _startupService.DisableStartup();
                 lblStatus.Text = _isTurkish ?
                     "Windows ile başlatma devre dışı bırakıldı" :
                     "Start with Windows disabled";
@@ -337,7 +353,7 @@ internal partial class MainForm : Form
             $"{minutes} minute{(minutes != 1 ? "s" : "")}";
     }
 
-    private void BtnClean_Click(object sender, EventArgs e)
+    private async void BtnClean_Click(object sender, EventArgs e)
     {
         var selectedProcesses = listViewProcesses.CheckedItems
             .Cast<ListViewItem>()
@@ -365,19 +381,18 @@ internal partial class MainForm : Form
                 "Bellek temizleniyor..." :
                 "Cleaning memory...";
 
-            Application.DoEvents();
-
-            _ramBusiness.CleanMemory(selectedProcesses);
+            await _ramCleanerService.CleanMemoryAsync(selectedProcesses);
 
             lblStatus.Text = _isTurkish ?
                 $"Bellek optimize edildi! {selectedProcesses.Count} uygulama temizlendi." :
                 $"Memory optimized! Cleaned {selectedProcesses.Count} application(s).";
 
-            Thread.Sleep(500);
-            LoadProcesses();
+            await System.Threading.Tasks.Task.Delay(500);
+            await LoadProcessesAsync();
         }
         catch (Exception ex)
         {
+            _logger?.LogError(ex, "Clean failed");
             string errorMsg = _isTurkish ?
                 $"Temizleme hatası: {ex.Message}" :
                 $"Clean error: {ex.Message}";
@@ -394,7 +409,7 @@ internal partial class MainForm : Form
 
     private void BtnRefresh_Click(object sender, EventArgs e)
     {
-        LoadProcesses();
+        _ = LoadProcessesAsync();
     }
 
     private void BtnSelectAll_Click(object sender, EventArgs e)

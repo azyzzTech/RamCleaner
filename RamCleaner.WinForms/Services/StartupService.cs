@@ -1,13 +1,15 @@
 ﻿using Microsoft.Win32;
+using RamCleaner.WinForms.Core.Services;
+using System;
 
 namespace RamCleaner.WinForms.Services;
 
-internal class StartupService
+internal class StartupService : IStartupService
 {
     private const string RegistryKeyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
     private const string AppName = "RamCleaner";
 
-    public static bool IsStartupEnabled()
+    public bool IsStartupEnabled()
     {
         try
         {
@@ -24,7 +26,7 @@ internal class StartupService
         return false;
     }
 
-    public static void EnableStartup()
+    public void EnableStartup()
     {
         try
         {
@@ -43,7 +45,7 @@ internal class StartupService
         }
     }
 
-    public static void DisableStartup()
+    public void DisableStartup()
     {
         try
         {
