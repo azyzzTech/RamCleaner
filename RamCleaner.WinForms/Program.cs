@@ -61,16 +61,28 @@ internal static class Program
             // setting not present; ignore
         }
 
-        var login = services.GetRequiredService<LoginForm>();
+        var authService = services.GetRequiredService<IAuthService>();
 
-        if (login.ShowDialog() == DialogResult.OK)
+        // Check saved auth status first; if valid within 1 week we skip login form
+        bool isAuthorized = false;
+        try
         {
-            var main = services.GetRequiredService<MainForm>();
-            Application.Run(main);
+            isAuthorized = authService.ValidateAuthStatusAsync().GetAwaiter().GetResult();
         }
-        else
+        catch { isAuthorized = false; }
+
+        if (!isAuthorized)
         {
-            Application.Exit();
+            var login = services.GetRequiredService<LoginForm>();
+
+            if (login.ShowDialog() != DialogResult.OK)
+            {
+                Application.Exit();
+                return;
+            }
         }
+
+        var main = services.GetRequiredService<MainForm>();
+        Application.Run(main);
     }
 }

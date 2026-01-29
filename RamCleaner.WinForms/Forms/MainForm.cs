@@ -38,6 +38,27 @@ internal partial class MainForm : Form
         SetupLanguage();
         SetupTooltips();
         LoadStartupState();
+        // If application is configured to start with Windows, restore auto-clean and threshold
+        try
+        {
+            if (chkStartup.Checked)
+            {
+                var settings = RamCleaner.WinForms.Properties.Settings.Default;
+                try
+                {
+                    chkAutoClean.Checked = settings.AutoCleanEnabled;
+                }
+                catch { }
+
+                try
+                {
+                    // settings.RamThreshold is int, numRamThreshold is decimal
+                    numRamThreshold.Value = Math.Max(numRamThreshold.Minimum, Math.Min(numRamThreshold.Maximum, settings.RamThreshold));
+                }
+                catch { }
+            }
+        }
+        catch { }
         _ = LoadProcessesAsync();
 
         // create language selector combobox at runtime
@@ -289,6 +310,14 @@ internal partial class MainForm : Form
         }
 
         numInterval.Enabled = chkAutoClean.Checked;
+
+        try
+        {
+            var settings = RamCleaner.WinForms.Properties.Settings.Default;
+            settings.AutoCleanEnabled = chkAutoClean.Checked;
+            settings.Save();
+        }
+        catch { }
     }
 
     private async void Timer_Tick(object? sender, EventArgs e)
@@ -327,6 +356,13 @@ internal partial class MainForm : Form
     private async void NumRamThreshold_ValueChanged(object sender, EventArgs e)
     {
         UpdateRamThresholdInfo();
+        try
+        {
+            var settings = RamCleaner.WinForms.Properties.Settings.Default;
+            settings.RamThreshold = (int)numRamThreshold.Value;
+            settings.Save();
+        }
+        catch { }
         await LoadProcessesAsync();
     }
 

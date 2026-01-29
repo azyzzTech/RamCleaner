@@ -45,16 +45,28 @@ namespace RamCleaner.WinForms.Properties {
                 this["IsAuthorized"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string UICulture {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoCleanEnabled {
             get {
-                return ((string)(this["UICulture"]));
+                return ((bool)(this["AutoCleanEnabled"]));
             }
             set {
-                this["UICulture"] = value;
+                this["AutoCleanEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public int RamThreshold {
+            get {
+                return ((int)(this["RamThreshold"]));
+            }
+            set {
+                this["RamThreshold"] = value;
             }
         }
     }

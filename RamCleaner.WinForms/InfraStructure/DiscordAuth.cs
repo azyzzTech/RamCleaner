@@ -31,6 +31,27 @@ internal class DiscordAuth : IAuthService
     }
 
     /// <summary>
+    /// Validates stored authorization without requiring interactive flow.
+    /// Returns true if the stored settings indicate authorization within last 7 days.
+    /// </summary>
+    public Task<bool> ValidateAuthStatusAsync(System.Threading.CancellationToken ct = default)
+    {
+        try
+        {
+            DateTime lastAuth = Properties.Settings.Default.LastAuthDate;
+            bool isStillValid = (DateTime.Now - lastAuth).TotalDays < 7;
+            bool wasAuthorized = Properties.Settings.Default.IsAuthorized;
+
+            return Task.FromResult(wasAuthorized && isStillValid);
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogDebug(ex, "ValidateAuthStatusAsync failed");
+            return Task.FromResult(false);
+        }
+    }
+
+    /// <summary>
     /// Executes the full OAuth flow and validates authorization against the remote API.
     /// Returns true when authorization is successful and within the configured validity period.
     /// </summary>
