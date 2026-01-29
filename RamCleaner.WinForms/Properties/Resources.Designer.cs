@@ -19,7 +19,7 @@ namespace RamCleaner.WinForms.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -59,53 +59,419 @@ namespace RamCleaner.WinForms.Properties {
                 resourceCulture = value;
             }
         }
-
-    // Strongly-typed resource accessors
-    internal static string LoginFailedMessage => ResourceManager.GetString("LoginFailedMessage", resourceCulture);
-    internal static string AuthTitle => ResourceManager.GetString("AuthTitle", resourceCulture);
-    internal static string GenericErrorMessage => ResourceManager.GetString("GenericErrorMessage", resourceCulture);
-    internal static string WaitingForDiscord => ResourceManager.GetString("WaitingForDiscord", resourceCulture);
-    internal static string FormTitle => ResourceManager.GetString("FormTitle", resourceCulture);
-    internal static string ApplicationName => ResourceManager.GetString("ApplicationName", resourceCulture);
-    internal static string BtnCleanText => ResourceManager.GetString("BtnCleanText", resourceCulture);
-    internal static string BtnRefreshText => ResourceManager.GetString("BtnRefreshText", resourceCulture);
-    internal static string BtnSelectAllText => ResourceManager.GetString("BtnSelectAllText", resourceCulture);
-    internal static string BtnSelectNoneText => ResourceManager.GetString("BtnSelectNoneText", resourceCulture);
-    internal static string ChkAutoCleanText => ResourceManager.GetString("ChkAutoCleanText", resourceCulture);
-    internal static string ChkStartupText => ResourceManager.GetString("ChkStartupText", resourceCulture);
-    internal static string LblTitle => ResourceManager.GetString("LblTitle", resourceCulture);
-    internal static string ColumnMemory => ResourceManager.GetString("ColumnMemory", resourceCulture);
-    internal static string NotifyIconText => ResourceManager.GetString("NotifyIconText", resourceCulture);
-    internal static string LnkYoutubeText => ResourceManager.GetString("LnkYoutubeText", resourceCulture);
-    internal static string GroupBoxProcessesText => ResourceManager.GetString("GroupBoxProcessesText", resourceCulture);
-    internal static string ShowMenuText => ResourceManager.GetString("ShowMenuText", resourceCulture);
-    internal static string GroupBoxActionsText => ResourceManager.GetString("GroupBoxActionsText", resourceCulture);
-    internal static string ExitMenuText => ResourceManager.GetString("ExitMenuText", resourceCulture);
-    internal static string LabelInterval => ResourceManager.GetString("LabelInterval", resourceCulture);
-    internal static string LabelProcessesFound => ResourceManager.GetString("LabelProcessesFound", resourceCulture);
-    internal static string LabelTotalMemory => ResourceManager.GetString("LabelTotalMemory", resourceCulture);
-    internal static string LabelRamThreshold => ResourceManager.GetString("LabelRamThreshold", resourceCulture);
-    internal static string ToolTip_Clean => ResourceManager.GetString("ToolTip_Clean", resourceCulture);
-    internal static string ToolTip_Refresh => ResourceManager.GetString("ToolTip_Refresh", resourceCulture);
-    internal static string ToolTip_AutoClean => ResourceManager.GetString("ToolTip_AutoClean", resourceCulture);
-    internal static string ToolTip_Startup => ResourceManager.GetString("ToolTip_Startup", resourceCulture);
-    internal static string ToolTip_Interval => ResourceManager.GetString("ToolTip_Interval", resourceCulture);
-    internal static string ToolTip_ProcessesList => ResourceManager.GetString("ToolTip_ProcessesList", resourceCulture);
-    internal static string Status_LastUpdated => ResourceManager.GetString("Status_LastUpdated", resourceCulture);
-    internal static string Status_Cleaning => ResourceManager.GetString("Status_Cleaning", resourceCulture);
-    internal static string Status_AutoCleanEnabled => ResourceManager.GetString("Status_AutoCleanEnabled", resourceCulture);
-    internal static string Status_AutoCleanDisabled => ResourceManager.GetString("Status_AutoCleanDisabled", resourceCulture);
-    internal static string Msg_SelectApplications => ResourceManager.GetString("Msg_SelectApplications", resourceCulture);
-    internal static string Msg_CleanedApplications => ResourceManager.GetString("Msg_CleanedApplications", resourceCulture);
-    internal static string BtnChangeLanguageText => ResourceManager.GetString("BtnChangeLanguageText", resourceCulture);
-    internal static string ProcessCountFormat => ResourceManager.GetString("ProcessCountFormat", resourceCulture);
-    internal static string Status_AutoCleaned => ResourceManager.GetString("Status_AutoCleaned", resourceCulture);
-    internal static string StartupEnabled => ResourceManager.GetString("StartupEnabled", resourceCulture);
-    internal static string StartupDisabled => ResourceManager.GetString("StartupDisabled", resourceCulture);
-    internal static string StartupChangeFailedFormat => ResourceManager.GetString("StartupChangeFailedFormat", resourceCulture);
-    internal static string ErrorTitle => ResourceManager.GetString("ErrorTitle", resourceCulture);
-    internal static string LinkOpenFailed => ResourceManager.GetString("LinkOpenFailed", resourceCulture);
-    internal static string TrayMinimizedMessage => ResourceManager.GetString("TrayMinimizedMessage", resourceCulture);
-    internal static string TrayTitle => ResourceManager.GetString("TrayTitle", resourceCulture);
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application Name.
+        /// </summary>
+        internal static string ApplicationName {
+            get {
+                return ResourceManager.GetString("ApplicationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SupremeLegends Auth.
+        /// </summary>
+        internal static string AuthTitle {
+            get {
+                return ResourceManager.GetString("AuthTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Language.
+        /// </summary>
+        internal static string BtnChangeLanguageText {
+            get {
+                return ResourceManager.GetString("BtnChangeLanguageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clean Now.
+        /// </summary>
+        internal static string BtnCleanText {
+            get {
+                return ResourceManager.GetString("BtnCleanText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh List.
+        /// </summary>
+        internal static string BtnRefreshText {
+            get {
+                return ResourceManager.GetString("BtnRefreshText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select All.
+        /// </summary>
+        internal static string BtnSelectAllText {
+            get {
+                return ResourceManager.GetString("BtnSelectAllText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select None.
+        /// </summary>
+        internal static string BtnSelectNoneText {
+            get {
+                return ResourceManager.GetString("BtnSelectNoneText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto Clean.
+        /// </summary>
+        internal static string ChkAutoCleanText {
+            get {
+                return ResourceManager.GetString("ChkAutoCleanText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start with Windows.
+        /// </summary>
+        internal static string ChkStartupText {
+            get {
+                return ResourceManager.GetString("ChkStartupText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Memory Usage.
+        /// </summary>
+        internal static string ColumnMemory {
+            get {
+                return ResourceManager.GetString("ColumnMemory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string ErrorTitle {
+            get {
+                return ResourceManager.GetString("ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        internal static string ExitMenuText {
+            get {
+                return ResourceManager.GetString("ExitMenuText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RAM Cleaner.
+        /// </summary>
+        internal static string FormTitle {
+            get {
+                return ResourceManager.GetString("FormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred.
+        /// </summary>
+        internal static string GenericErrorMessage {
+            get {
+                return ResourceManager.GetString("GenericErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto Clean Settings.
+        /// </summary>
+        internal static string GroupBoxActionsText {
+            get {
+                return ResourceManager.GetString("GroupBoxActionsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to High Memory Usage Processes.
+        /// </summary>
+        internal static string GroupBoxProcessesText {
+            get {
+                return ResourceManager.GetString("GroupBoxProcessesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interval:.
+        /// </summary>
+        internal static string LabelInterval {
+            get {
+                return ResourceManager.GetString("LabelInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processes Found:.
+        /// </summary>
+        internal static string LabelProcessesFound {
+            get {
+                return ResourceManager.GetString("LabelProcessesFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RAM Threshold:.
+        /// </summary>
+        internal static string LabelRamThreshold {
+            get {
+                return ResourceManager.GetString("LabelRamThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Memory:.
+        /// </summary>
+        internal static string LabelTotalMemory {
+            get {
+                return ResourceManager.GetString("LabelTotalMemory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RAM Cleaner.
+        /// </summary>
+        internal static string LblTitle {
+            get {
+                return ResourceManager.GetString("LblTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not open link: {0}.
+        /// </summary>
+        internal static string LinkOpenFailed {
+            get {
+                return ResourceManager.GetString("LinkOpenFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Follow Us: YouTube.
+        /// </summary>
+        internal static string LnkYoutubeText {
+            get {
+                return ResourceManager.GetString("LnkYoutubeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login failed or insufficient permissions!.
+        /// </summary>
+        internal static string LoginFailedMessage {
+            get {
+                return ResourceManager.GetString("LoginFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Memory optimized! Cleaned {0} application(s)..
+        /// </summary>
+        internal static string Msg_CleanedApplications {
+            get {
+                return ResourceManager.GetString("Msg_CleanedApplications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select applications to clean..
+        /// </summary>
+        internal static string Msg_SelectApplications {
+            get {
+                return ResourceManager.GetString("Msg_SelectApplications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RAM Cleaner.
+        /// </summary>
+        internal static string NotifyIconText {
+            get {
+                return ResourceManager.GetString("NotifyIconText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} processes.
+        /// </summary>
+        internal static string ProcessCountFormat {
+            get {
+                return ResourceManager.GetString("ProcessCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show.
+        /// </summary>
+        internal static string ShowMenuText {
+            get {
+                return ResourceManager.GetString("ShowMenuText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to change startup setting: {0}.
+        /// </summary>
+        internal static string StartupChangeFailedFormat {
+            get {
+                return ResourceManager.GetString("StartupChangeFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start with Windows disabled.
+        /// </summary>
+        internal static string StartupDisabled {
+            get {
+                return ResourceManager.GetString("StartupDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start with Windows enabled.
+        /// </summary>
+        internal static string StartupEnabled {
+            get {
+                return ResourceManager.GetString("StartupEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto clean disabled.
+        /// </summary>
+        internal static string Status_AutoCleanDisabled {
+            get {
+                return ResourceManager.GetString("Status_AutoCleanDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto cleaned: {0} application(s).
+        /// </summary>
+        internal static string Status_AutoCleaned {
+            get {
+                return ResourceManager.GetString("Status_AutoCleaned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto clean active: Every {0} minute(s).
+        /// </summary>
+        internal static string Status_AutoCleanEnabled {
+            get {
+                return ResourceManager.GetString("Status_AutoCleanEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cleaning memory....
+        /// </summary>
+        internal static string Status_Cleaning {
+            get {
+                return ResourceManager.GetString("Status_Cleaning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last updated: {0}.
+        /// </summary>
+        internal static string Status_LastUpdated {
+            get {
+                return ResourceManager.GetString("Status_LastUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically cleans memory at specified intervals.
+        /// </summary>
+        internal static string ToolTip_AutoClean {
+            get {
+                return ResourceManager.GetString("ToolTip_AutoClean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optimizes memory usage for selected applications.
+        /// </summary>
+        internal static string ToolTip_Clean {
+            get {
+                return ResourceManager.GetString("ToolTip_Clean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto clean interval (minutes).
+        /// </summary>
+        internal static string ToolTip_Interval {
+            get {
+                return ResourceManager.GetString("ToolTip_Interval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check/uncheck applications to clean.
+        /// </summary>
+        internal static string ToolTip_ProcessesList {
+            get {
+                return ResourceManager.GetString("ToolTip_ProcessesList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refreshes the application list.
+        /// </summary>
+        internal static string ToolTip_Refresh {
+            get {
+                return ResourceManager.GetString("ToolTip_Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically start the application when Windows starts.
+        /// </summary>
+        internal static string ToolTip_Startup {
+            get {
+                return ResourceManager.GetString("ToolTip_Startup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application minimized to system tray. Double-click to restore..
+        /// </summary>
+        internal static string TrayMinimizedMessage {
+            get {
+                return ResourceManager.GetString("TrayMinimizedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RAM Cleaner.
+        /// </summary>
+        internal static string TrayTitle {
+            get {
+                return ResourceManager.GetString("TrayTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting for Discord....
+        /// </summary>
+        internal static string WaitingForDiscord {
+            get {
+                return ResourceManager.GetString("WaitingForDiscord", resourceCulture);
+            }
+        }
     }
 }

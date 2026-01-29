@@ -231,9 +231,6 @@
   <data name="ProcessCountFormat" xml:space="preserve">
     <value>{0} processes</value>
   </data>
-  <data name="ProcessCountFormat.tr" xml:space="preserve">
-    <value>{0} süreç</value>
-  </data>
   <data name="Status_AutoCleaned" xml:space="preserve">
     <value>Auto cleaned: {0} application(s)</value>
   </data>
