@@ -22,14 +22,16 @@ internal partial class MainForm : Form
     private readonly RamCleaner.WinForms.Presenters.IMainPresenter _presenter;
     private readonly ILogger<MainForm> _logger;
     private readonly ILocalizationService _localizationService;
+    private readonly IAuthService _authService;
     private System.Windows.Forms.ComboBox _cmbLanguage;
 
-    public MainForm(RamCleaner.WinForms.Presenters.IMainPresenter presenter, ILocalizationService localizationService, ILogger<MainForm> logger)
+    public MainForm(RamCleaner.WinForms.Presenters.IMainPresenter presenter, ILocalizationService localizationService, ILogger<MainForm> logger, IAuthService authService)
     {
         _presenter = presenter;
         // fallback if DI didn't provide localizationService (defensive)
         _localizationService = localizationService ?? new LocalizationService();
         _logger = logger;
+        _authService = authService;
 
         InitializeComponent();
 
@@ -568,5 +570,20 @@ internal partial class MainForm : Form
         _isClosing = true;
         notifyIcon.Visible = false;
         Application.Exit();
+    }
+
+    private void BtnResetAuth_Click(object? sender, EventArgs e)
+    {
+        var confirmResult = MessageBox.Show(Properties.Resources.AuthLogoutEnsure,
+                                     "Reset Authentication",
+                                     MessageBoxButtons.YesNo,
+                                     MessageBoxIcon.Warning);
+
+        if (confirmResult == DialogResult.Yes)
+        {
+            _authService.Logout();
+            Application.Restart();
+            Environment.Exit(0);
+        }
     }
 }

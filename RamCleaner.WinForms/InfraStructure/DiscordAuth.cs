@@ -17,7 +17,7 @@ internal class DiscordAuth : IAuthService
 {
     private const string ClientId = "1463542451460636828";
     private const string RedirectUri = "http://localhost:5000/";
-    private const string ApiBaseUrl = "https://ram-cleaner-dc-auth-api.onrender.com";
+    private const string ApiBaseUrl = "https://sl-dc-auth-api.vercel.app/";
     private readonly System.Net.Http.IHttpClientFactory _httpFactory;
     private readonly ILogger<DiscordAuth>? _logger;
 
@@ -114,6 +114,16 @@ internal class DiscordAuth : IAuthService
             _logger?.LogError(ex, "Auth flow failed");
             return false;
         }
+    }
+
+    /// <summary>
+    /// Resets the authentication status and clears stored credentials.
+    /// </summary>
+    public void Logout()
+    {
+        Properties.Settings.Default.LastAuthDate = DateTime.MinValue;
+        Properties.Settings.Default.IsAuthorized = false;
+        Properties.Settings.Default.Save();
     }
 
     /// <summary>

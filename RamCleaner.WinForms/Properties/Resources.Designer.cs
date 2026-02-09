@@ -70,6 +70,15 @@ namespace RamCleaner.WinForms.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to reset authentication and logout?.
+        /// </summary>
+        internal static string AuthLogoutEnsure {
+            get {
+                return ResourceManager.GetString("AuthLogoutEnsure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SupremeLegends Auth.
         /// </summary>
         internal static string AuthTitle {

@@ -38,6 +38,7 @@ partial class MainForm
         ApplicationName = new ColumnHeader();
         Memory = new ColumnHeader();
         btnClean = new Button();
+        btnResetAuth = new Button();
         numInterval = new NumericUpDown();
         chkAutoClean = new CheckBox();
         lblStatus = new Label();
@@ -123,6 +124,24 @@ partial class MainForm
         btnClean.Text = "Clean Now";
         btnClean.UseVisualStyleBackColor = false;
         btnClean.Click += BtnClean_Click;
+        // 
+        // btnResetAuth
+        // 
+        btnResetAuth.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+        btnResetAuth.BackColor = Color.FromArgb(25, 25, 25);
+        btnResetAuth.FlatAppearance.BorderColor = Color.Red;
+        btnResetAuth.FlatAppearance.MouseDownBackColor = Color.FromArgb(35, 35, 35);
+        btnResetAuth.FlatAppearance.MouseOverBackColor = Color.FromArgb(30, 30, 30);
+        btnResetAuth.FlatStyle = FlatStyle.Flat;
+        btnResetAuth.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+        btnResetAuth.ForeColor = Color.White;
+        btnResetAuth.Location = new Point(594, 493);
+        btnResetAuth.Name = "btnResetAuth";
+        btnResetAuth.Size = new Size(184, 30);
+        btnResetAuth.TabIndex = 22;
+        btnResetAuth.Text = "Reset Auth";
+        btnResetAuth.UseVisualStyleBackColor = false;
+        btnResetAuth.Click += BtnResetAuth_Click;
         // 
         // numInterval
         // 
@@ -495,7 +514,8 @@ partial class MainForm
         AutoScaleDimensions = new SizeF(8F, 17F);
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.FromArgb(18, 18, 18);
-        ClientSize = new Size(800, 536);
+        ClientSize = new Size(800, 576);
+        Controls.Add(btnResetAuth);
         Controls.Add(panelFooter);
         Controls.Add(groupBoxProcesses);
         Controls.Add(panelStats);
@@ -564,4 +584,5 @@ partial class MainForm
     private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
     private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     private System.Windows.Forms.ToolTip toolTip;
+    private System.Windows.Forms.Button btnResetAuth;
 }

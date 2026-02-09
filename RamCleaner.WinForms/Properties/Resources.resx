@@ -255,4 +255,7 @@
   <data name="TrayTitle" xml:space="preserve">
     <value>RAM Cleaner</value>
   </data>
+  <data name="AuthLogoutEnsure" xml:space="preserve">
+    <value>Are you sure you want to reset authentication and logout?</value>
+  </data>
 </root>

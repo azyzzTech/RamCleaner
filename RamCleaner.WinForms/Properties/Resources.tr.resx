@@ -255,4 +255,7 @@
   <data name="TrayTitle" xml:space="preserve">
     <value>RAM Temizleyici</value>
   </data>
+  <data name="AuthLogoutEnsure" xml:space="preserve">
+    <value>Giriş bilgilerini sıfırlamak istediğinizden emin misiniz?</value>
+  </data>
 </root>
